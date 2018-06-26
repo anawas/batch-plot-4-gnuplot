@@ -1,0 +1,18 @@
+set datafile separator ","
+set xr [0:40]
+set yr [-20:20]
+set grid
+set title "%TITLE%" noenhanced
+fx(x) = ax*x + bx
+fit fx(x) "../%FILENAME%" using 1:3 via ax,bx
+fy(x) = ay*x + by
+fit fy(x) "../%FILENAME%" using 1:4 via ay,by
+
+set term png
+set output "%OUTNAME%.png"
+set multiplot layout 2,1
+plot "../%FILENAME%" using 1:3 ti "x coords", fx(x) ti "trend"
+plot "../%FILENAME%" using 1:4 ti "y coords", fy(x) ti "trend"
+unset multiplot
+unset output
+unset term
